@@ -32,12 +32,17 @@ class CalcApp extends React.Component {
   }
 
   numPressed(num) {
-    console.log(num);
     const real = Number(num);
+    if (this.state.num === 1) {
+      this.setState({
+        result: real,
+        num: 2,
+      });
+      return;
+    }
     if (real === 0 && this.state.result === 0) {
       return;
     }
-    console.log(this.state.result);
     this.setState({
       result: this.state.result * 10 + real,
     });
@@ -48,15 +53,10 @@ class CalcApp extends React.Component {
       this.setState({
         num: 1,
         temp: this.state.result,
-        result: 0,
       });
     } else if (this.state.num === 2) {
       this.calc();
-      this.setState({
-        num: 1,
-        temp: this.state.result,
-        result: 0,
-      });
+      this.setState({ num: 1 });
     }
     if (type === '+') {
       this.setState({ type: 1 });
@@ -76,23 +76,24 @@ class CalcApp extends React.Component {
   }
 
   calc() {
+    let a;
     switch (this.state.type) {
       case 1:
-        this.setState({ result: this.state.result + this.state.temp });
+        this.setState({ result: a = this.state.result + this.state.temp });
         break;
       case 2:
-        this.setState({ result: this.state.temp - this.state.result });
+        this.setState({ result: a = this.state.temp - this.state.result });
         break;
       case 3:
-        this.setState({ result: this.state.result * this.state.temp });
+        this.setState({ result: a = this.state.result * this.state.temp });
         break;
       case 4:
-        this.setState({ result: this.state.temp / this.state.result });
+        this.setState({ result: a = this.state.temp / this.state.result });
         break;
       default:
         console.log('Error');
     }
-    this.setState({ temp: 0 });
+    this.setState({ temp: a });
   }
 
   showNotImplemented() {
