@@ -6,12 +6,93 @@ class CalcApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // TODO
+      result: 0,
+      temp: 0,
+      num: 0, /* 0: input first num
+              // 1: just choose calc
+              // 2: inputing second num */
+      type: 0, /* 0: not yet
+                  1: add
+                  2: minus
+                  3: mul
+                  4: div */
     };
+    this.numPressed = this.numPressed.bind(this);
+    this.calPressed = this.calPressed.bind(this);
+    this.calc = this.calc.bind(this);
   }
 
   resetState() {
-    // TODO
+    this.setState({
+      result: 0,
+      temp: 0,
+      num: 0,
+      type: 0,
+    });
+  }
+
+  numPressed(num) {
+    console.log(num);
+    const real = Number(num);
+    if (real === 0 && this.state.result === 0) {
+      return;
+    }
+    console.log(this.state.result);
+    this.setState({
+      result: this.state.result * 10 + real,
+    });
+  }
+
+  calPressed(type) {
+    if (this.state.num === 0) {
+      this.setState({
+        num: 1,
+        temp: this.state.result,
+        result: 0,
+      });
+    } else if (this.state.num === 2) {
+      this.calc();
+      this.setState({
+        num: 1,
+        temp: this.state.result,
+        result: 0,
+      });
+    }
+    if (type === '+') {
+      this.setState({ type: 1 });
+    } else if (type === '-') {
+      this.setState({ type: 2 });
+    } else if (type === '×') {
+      this.setState({ type: 3 });
+    } else if (type === '÷') {
+      this.setState({ type: 4 });
+    } else if (type === '=') {
+      this.setState({
+        type: 0,
+        num: 0,
+      });
+      this.calc();
+    }
+  }
+
+  calc() {
+    switch (this.state.type) {
+      case 1:
+        this.setState({ result: this.state.result + this.state.temp });
+        break;
+      case 2:
+        this.setState({ result: this.state.temp - this.state.result });
+        break;
+      case 3:
+        this.setState({ result: this.state.result * this.state.temp });
+        break;
+      case 4:
+        this.setState({ result: this.state.temp / this.state.result });
+        break;
+      default:
+        console.log('Error');
+    }
+    this.setState({ temp: 0 });
   }
 
   showNotImplemented() {
@@ -23,19 +104,57 @@ class CalcApp extends React.Component {
       <div className="calc-app">
         <div className="calc-container">
           <div className="calc-output">
-            <div className="calc-display">1980</div>
+            <div className="calc-display">{this.state.result}</div>
           </div>
           <div className="calc-row">
             <CalcButton onClick={this.resetState.bind(this)}>AC</CalcButton>
             <CalcButton onClick={this.showNotImplemented.bind(this)}>+/-</CalcButton>
             <CalcButton onClick={this.showNotImplemented.bind(this)}>%</CalcButton>
-            <CalcButton className="calc-operator">÷</CalcButton>
+            <CalcButton className="calc-operator" onClick={this.calPressed}>÷</CalcButton>
           </div>
           <div className="calc-row">
-            <CalcButton className="calc-number">7</CalcButton>
-            <CalcButton className="calc-number"></CalcButton>
-            <CalcButton className="calc-number"></CalcButton>
-            <CalcButton className="calc-operator"></CalcButton>
+            <CalcButton className="calc-number" onClick={this.numPressed}>
+              7
+            </CalcButton>
+            <CalcButton className="calc-number" onClick={this.numPressed}>
+              8
+            </CalcButton>
+            <CalcButton className="calc-number" onClick={this.numPressed}>
+              9
+            </CalcButton>
+            <CalcButton className="calc-operator" onClick={this.calPressed}>×</CalcButton>
+          </div>
+          <div className="calc-row">
+            <CalcButton className="calc-number" onClick={this.numPressed}>
+              4
+            </CalcButton>
+            <CalcButton className="calc-number" onClick={this.numPressed}>
+              5
+            </CalcButton>
+            <CalcButton className="calc-number" onClick={this.numPressed}>
+              6
+            </CalcButton>
+            <CalcButton className="calc-operator" onClick={this.calPressed}>-</CalcButton>
+          </div>
+          <div className="calc-row">
+            <CalcButton className="calc-number" onClick={this.numPressed}>
+              1
+            </CalcButton>
+            <CalcButton className="calc-number" onClick={this.numPressed}>
+              2
+            </CalcButton>
+            <CalcButton className="calc-number" onClick={this.numPressed}>
+              3
+            </CalcButton>
+            <CalcButton className="calc-operator" onClick={this.calPressed}>+</CalcButton>
+          </div>
+          <div className="calc-row">
+            <CalcButton
+              className="calc-number bigger-btn"
+              onClick={this.numPressed}
+            >0</CalcButton>
+            <CalcButton className="calc-number">.</CalcButton>
+            <CalcButton className="calc-operator" onClick={this.calPressed}>=</CalcButton>
           </div>
         </div>
       </div>
