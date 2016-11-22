@@ -18,7 +18,7 @@ it('render button correctly', () => {
   expect(row1.find(CalcButton).at(0).text()).toBe('7');
   expect(row1.find(CalcButton).at(1).text()).toBe('8');
   expect(row1.find(CalcButton).at(2).text()).toBe('9');
-  expect(row1.find(CalcButton).at(3).text()).toBe('x');
+  expect(row1.find(CalcButton).at(3).text()).toBe('×');
 
   const row2 = rows.at(2);
   expect(row2.find(CalcButton).at(0).text()).toBe('4');
@@ -195,3 +195,52 @@ it('AC should clear state', () => {
   expect(app.state()).toEqual(initialState);
 });
 
+it('123456', () => {
+  const app = mount(<CalcApp />);
+
+  const rows = app.find('.calc-row');
+
+  const row0 = rows.at(0);
+  const btnDiv = row0.find(CalcButton).at(3);
+
+  const row3 = rows.at(3);
+  const btn1 = row3.find(CalcButton).at(0);
+  const btn2 = row3.find(CalcButton).at(1);
+  const btn3 = row3.find(CalcButton).at(2);
+  const btnAdd = row3.find(CalcButton).at(3);
+
+  const row2 = rows.at(2);
+  const btn4 = row2.find(CalcButton).at(0);
+  const btn5 = row2.find(CalcButton).at(1);
+  const btn6 = row2.find(CalcButton).at(2);
+  const btnMinus = row2.find(CalcButton).at(3);
+
+  const row1 = rows.at(1);
+  const btn7 = row1.find(CalcButton).at(0);
+  const btn8 = row1.find(CalcButton).at(1);
+  const btn9 = row1.find(CalcButton).at(2);
+  const btnMult = row1.find(CalcButton).at(3);
+
+  const row4 = rows.at(4);
+  const btnEqual = row0.find(CalcButton).at(3);
+
+  btn1.simulate('click');
+  btn2.simulate('click');
+  btn3.simulate('click');
+  btn4.simulate('click');
+  btn5.simulate('click');
+  btn6.simulate('click');
+  btnMult.simulate('click');
+  btn7.simulate('click');
+  btnAdd.simulate('click');
+  expect(app.find('.calc-display').text()).toBe('864192');
+
+  btn9.simulate('click');
+  btnDiv.simulate('click');
+  expect(app.find('.calc-display').text()).toBe('864201');
+
+  btn3.simulate('click');
+  btnEqual.simulate('click');
+  expect(app.find('.calc-display').text()).toBe('288067');
+
+});
